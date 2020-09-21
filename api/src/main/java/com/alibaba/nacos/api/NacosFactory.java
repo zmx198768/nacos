@@ -31,8 +31,15 @@ import java.util.Properties;
  *
  * @author Nacos
  */
+/**
+ * com.alibaba.nacos.api.NacosFactory.java
+ * @阅读人 zengmx(8574157@qq.com)
+ * @阅读时间  2020/9/21 15:08
+ * nacosFactory使用静态方法生成configService、namingService、namingMaintainService，
+ * 三者生成方式方法类似，均为两类入口，分别为传入properties或传入serverAddr进行服务生成
+ */
 public class NacosFactory {
-    
+
     /**
      * Create config service.
      *
@@ -43,7 +50,7 @@ public class NacosFactory {
     public static ConfigService createConfigService(Properties properties) throws NacosException {
         return ConfigFactory.createConfigService(properties);
     }
-    
+
     /**
      * Create config service.
      *
@@ -54,7 +61,7 @@ public class NacosFactory {
     public static ConfigService createConfigService(String serverAddr) throws NacosException {
         return ConfigFactory.createConfigService(serverAddr);
     }
-    
+
     /**
      * Create naming service.
      *
@@ -65,7 +72,7 @@ public class NacosFactory {
     public static NamingService createNamingService(String serverAddr) throws NacosException {
         return NamingFactory.createNamingService(serverAddr);
     }
-    
+
     /**
      * Create naming service.
      *
@@ -76,7 +83,7 @@ public class NacosFactory {
     public static NamingService createNamingService(Properties properties) throws NacosException {
         return NamingFactory.createNamingService(properties);
     }
-    
+
     /**
      * Create maintain service.
      *
@@ -87,7 +94,7 @@ public class NacosFactory {
     public static NamingMaintainService createMaintainService(String serverAddr) throws NacosException {
         return NamingMaintainFactory.createMaintainService(serverAddr);
     }
-    
+
     /**
      * Create maintain service.
      *
