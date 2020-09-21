@@ -27,8 +27,14 @@ import java.util.Properties;
  * @author liaochuntao
  * @since 1.0.1
  */
+/**
+ * com.alibaba.nacos.api.naming.NamingMaintainFactory.java
+ * @阅读人 zengmx(8574157@qq.com)
+ * @阅读时间  2020/9/21 17:51
+ * 结构与configFactory一致，生成nacosNamingMaintainService
+ */
 public class NamingMaintainFactory {
-    
+
     /**
      * create a new maintain service.
      *
@@ -46,7 +52,7 @@ public class NamingMaintainFactory {
             throw new NacosException(NacosException.CLIENT_INVALID_PARAM, e);
         }
     }
-    
+
     /**
      * create a new maintain service.
      *
@@ -64,5 +70,5 @@ public class NamingMaintainFactory {
             throw new NacosException(NacosException.CLIENT_INVALID_PARAM, e);
         }
     }
-    
+
 }

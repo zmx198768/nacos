@@ -24,21 +24,27 @@ import java.util.Map;
  *
  * @author rushsky518
  */
+/**
+ * com.alibaba.nacos.api.config.ConfigChangeEvent.java
+ * @阅读人 zengmx(8574157@qq.com)
+ * @阅读时间  2020/9/21 18:26
+ * 配置变更事件操作
+ */
 public class ConfigChangeEvent {
-    
+
     private final Map<String, ConfigChangeItem> data;
-    
+
     public ConfigChangeEvent(Map<String, ConfigChangeItem> data) {
         this.data = data;
     }
-    
+
     public ConfigChangeItem getChangeItem(String key) {
         return data.get(key);
     }
-    
+
     public Collection<ConfigChangeItem> getChangeItems() {
         return data.values();
     }
-    
+
 }
 

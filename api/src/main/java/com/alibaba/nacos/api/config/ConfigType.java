@@ -21,44 +21,50 @@ package com.alibaba.nacos.api.config;
  *
  * @author liaochuntao
  **/
+/**
+ * com.alibaba.nacos.api.config.ConfigType.java
+ * @阅读人 zengmx(8574157@qq.com)
+ * @阅读时间  2020/9/21 18:08
+ * 配置类型支持，目前支持properties、xml、json、text、html、yaml，支持在界面配置
+ */
 public enum ConfigType {
-    
+
     /**
      * config type is "properties".
      */
     PROPERTIES("properties"),
-    
+
     /**
      * config type is "xml".
      */
     XML("xml"),
-    
+
     /**
      * config type is "json".
      */
     JSON("json"),
-    
+
     /**
      * config type is "text".
      */
     TEXT("text"),
-    
+
     /**
      * config type is "html".
      */
     HTML("html"),
-    
+
     /**
      * config type is "yaml".
      */
     YAML("yaml");
-    
+
     String type;
-    
+
     ConfigType(String type) {
         this.type = type;
     }
-    
+
     public String getType() {
         return type;
     }

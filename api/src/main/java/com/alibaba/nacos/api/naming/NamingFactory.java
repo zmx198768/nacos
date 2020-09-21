@@ -26,8 +26,14 @@ import java.util.Properties;
  *
  * @author nkorange
  */
+/**
+ * com.alibaba.nacos.api.naming.NamingFactory.java
+ * @阅读人 zengmx(8574157@qq.com)
+ * @阅读时间  2020/9/21 17:51
+ * 结构与configFactory一致，生成nacosNamingService
+ */
 public class NamingFactory {
-    
+
     /**
      * Create a new naming service.
      *
@@ -45,7 +51,7 @@ public class NamingFactory {
             throw new NacosException(NacosException.CLIENT_INVALID_PARAM, e);
         }
     }
-    
+
     /**
      * Create a new naming service.
      *

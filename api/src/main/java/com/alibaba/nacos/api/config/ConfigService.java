@@ -24,8 +24,14 @@ import com.alibaba.nacos.api.exception.NacosException;
  *
  * @author Nacos
  */
+/**
+ * com.alibaba.nacos.api.config.ConfigService.java
+ * @阅读人 zengmx(8574157@qq.com)
+ * @阅读时间  2020/9/21 18:05
+ * 配置服务接口，主要包含服务获取、发布、移除，监听器获取、发布、移除，状态获取，资源服务关闭
+ */
 public interface ConfigService {
-    
+
     /**
      * Get config.
      *
@@ -36,7 +42,7 @@ public interface ConfigService {
      * @throws NacosException NacosException
      */
     String getConfig(String dataId, String group, long timeoutMs) throws NacosException;
-    
+
     /**
      * Get config and register Listener.
      *
@@ -54,7 +60,7 @@ public interface ConfigService {
      */
     String getConfigAndSignListener(String dataId, String group, long timeoutMs, Listener listener)
             throws NacosException;
-    
+
     /**
      * Add a listener to the configuration, after the server modified the configuration, the client will use the
      * incoming listener callback. Recommended asynchronous processing, the application can implement the getExecutor
@@ -67,7 +73,7 @@ public interface ConfigService {
      * @throws NacosException NacosException
      */
     void addListener(String dataId, String group, Listener listener) throws NacosException;
-    
+
     /**
      * Publish config.
      *
@@ -78,7 +84,7 @@ public interface ConfigService {
      * @throws NacosException NacosException
      */
     boolean publishConfig(String dataId, String group, String content) throws NacosException;
-    
+
     /**
      * Remove config.
      *
@@ -88,7 +94,7 @@ public interface ConfigService {
      * @throws NacosException NacosException
      */
     boolean removeConfig(String dataId, String group) throws NacosException;
-    
+
     /**
      * Remove listener.
      *
@@ -97,14 +103,14 @@ public interface ConfigService {
      * @param listener listener
      */
     void removeListener(String dataId, String group, Listener listener);
-    
+
     /**
      * Get server status.
      *
      * @return whether health
      */
     String getServerStatus();
-    
+
     /**
      * Shutdown the resource service.
      *

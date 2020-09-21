@@ -27,8 +27,15 @@ import java.util.Properties;
  *
  * @author Nacos
  */
+/**
+ * com.alibaba.nacos.api.config.ConfigFactory.java
+ * @阅读人 zengmx(8574157@qq.com)
+ * @阅读时间  2020/9/21 15:21
+ * 基本的反射原理生成对应的nacosConfigService，并且使用properties作为初始化参数
+ * 传入serverAddr的方法，最终也包装成properties进行初始化调用
+ */
 public class ConfigFactory {
-    
+
     /**
      * Create Config.
      *
@@ -46,7 +53,7 @@ public class ConfigFactory {
             throw new NacosException(NacosException.CLIENT_INVALID_PARAM, e);
         }
     }
-    
+
     /**
      * Create Config.
      *

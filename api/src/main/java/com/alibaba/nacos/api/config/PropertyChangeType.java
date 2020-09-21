@@ -21,6 +21,12 @@ package com.alibaba.nacos.api.config;
  *
  * @author rushsky518
  */
+/**
+ * com.alibaba.nacos.api.config.PropertyChangeType.java
+ * @阅读人 zengmx(8574157@qq.com)
+ * @阅读时间  2020/9/21 18:10
+ * 属性操作类型：添加、修改、删除
+ */
 public enum PropertyChangeType {
     /**
      * add.
