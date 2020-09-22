@@ -28,14 +28,20 @@ import java.util.regex.Pattern;
  *
  * @author <a href="mailto:liaochuntao@live.com">liaochuntao</a>
  */
+/**
+ * com.alibaba.nacos.client.utils.ValidatorUtils.java
+ * @阅读人 zengmx(8574157@qq.com)
+ * @阅读时间  2020/9/22 10:25
+ * 校验工具，目前就看到校验contextPath属性值是否满足规则
+ */
 public final class ValidatorUtils {
-    
+
     private static final Pattern CONTEXT_PATH_MATCH = Pattern.compile("(\\/)\\1+");
-    
+
     public static void checkInitParam(Properties properties) throws NacosException {
         checkContextPath(properties.getProperty(PropertyKeyConst.CONTEXT_PATH));
     }
-    
+
     /**
      * Check context path.
      *
@@ -50,5 +56,5 @@ public final class ValidatorUtils {
             throw new IllegalArgumentException("Illegal url path expression");
         }
     }
-    
+
 }
