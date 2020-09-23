@@ -94,9 +94,12 @@ public class NacosConfigService implements ConfigService {
         }
         initNamespace(properties);
 
-        //
+        //初始化httpAgent，并且持续跟踪服务器情况，及时触发服务器变更通知
+        //comment by zengmx(8574157@qq.com)
         this.agent = new MetricsHttpAgent(new ServerHttpAgent(properties));
         this.agent.start();
+
+
         this.worker = new ClientWorker(this.agent, this.configFilterChainManager, properties);
     }
 

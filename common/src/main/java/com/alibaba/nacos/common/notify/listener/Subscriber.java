@@ -28,30 +28,36 @@ import java.util.concurrent.Executor;
  */
 @SuppressWarnings("PMD.AbstractClassShouldStartWithAbstractNamingRule")
 public abstract class Subscriber<T extends Event> {
-    
+
     /**
      * Event callback.
      *
      * @param event {@link Event}
      */
     public abstract void onEvent(T event);
-    
+
     /**
      * Type of this subscriber's subscription.
      *
      * @return Class which extends {@link Event}
      */
     public abstract Class<? extends Event> subscribeType();
-    
+
     /**
      * It is up to the listener to determine whether the callback is asynchronous or synchronous.
      *
      * @return {@link Executor}
      */
+    /**
+     * 疑惑点：没明白这个方法预留的目的，没有任何一个子类override该方法
+     * @阅读人 zengmx(8574157@qq.com)
+     * @阅读时间  2020/9/23 16:02
+     *
+     */
     public Executor executor() {
         return null;
     }
-    
+
     /**
      * Whether to ignore expired events.
      *

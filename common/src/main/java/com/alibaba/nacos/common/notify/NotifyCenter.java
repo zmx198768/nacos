@@ -280,6 +280,12 @@ public class NotifyCenter {
      * @param eventType class Instances type of the event type.
      * @param event     event instance.
      */
+    /**
+     * 发布事件通知，分为两类进行分布，一类是继承自slowevent的事件，另外一类为定义需要进行广播的事件通知
+     * @阅读人 zengmx(8574157@qq.com)
+     * @阅读时间  2020/9/23 16:18
+     * 
+     */
     private static boolean publishEvent(final Class<? extends Event> eventType, final Event event) {
         final String topic = ClassUtils.getCanonicalName(eventType);
         if (ClassUtils.isAssignableFrom(SlowEvent.class, eventType)) {

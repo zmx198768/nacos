@@ -325,6 +325,12 @@ public class ServerListManager implements Closeable {
         }
     }
 
+    /**
+     * updateIfChanged
+     * @阅读人 zengmx(8574157@qq.com)
+     * @阅读时间  2020/9/23 11:46
+     * 判断是否有新增加的服务器信息，若有，则发布ServerlistChangeEvent事件通知
+     */
     private void updateIfChanged(List<String> newList) {
         if (null == newList || newList.isEmpty()) {
             LOGGER.warn("[update-serverlist] current serverlist from address server is empty!!!");
