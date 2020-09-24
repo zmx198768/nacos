@@ -36,7 +36,7 @@ import java.nio.charset.CharsetDecoder;
  * @author configCenter
  */
 public class ConcurrentDiskUtil {
-    
+
     /**
      * get file content.
      *
@@ -49,7 +49,21 @@ public class ConcurrentDiskUtil {
         File file = new File(path);
         return getFileContent(file, charsetName);
     }
-    
+
+    /**
+     * write file content.
+     *
+     * @param path        file path
+     * @param content     content
+     * @param charsetName charsetName
+     * @return whether write ok
+     * @throws IOException IOException
+     */
+    public static Boolean writeFileContent(String path, String content, String charsetName) throws IOException {
+        File file = new File(path);
+        return writeFileContent(file, content, charsetName);
+    }
+
     /**
      * get file content.
      *
@@ -58,6 +72,12 @@ public class ConcurrentDiskUtil {
      * @return content
      * @throws IOException IOException
      */
+    /**
+     * com.alibaba.nacos.client.config.utils.ConcurrentDiskUtil.java
+     * @阅读人 zengmx(8574157@qq.com)
+     * @阅读时间  2020/9/24 16:40
+     * 使用共享锁获取文件，主要应用在多JVM应用情况下，避免文件抢占产生脏数据
+     */
     public static String getFileContent(File file, String charsetName) throws IOException {
         RandomAccessFile fis = null;
         FileLock rlock = null;
@@ -65,6 +85,8 @@ public class ConcurrentDiskUtil {
             fis = new RandomAccessFile(file, "r");
             FileChannel fcin = fis.getChannel();
             int i = 0;
+            //循环加锁，直至成功或者超过10次
+            //comment by zengmx(8574157@qq.com)
             do {
                 try {
                     rlock = fcin.tryLock(0L, Long.MAX_VALUE, true);
@@ -94,21 +116,7 @@ public class ConcurrentDiskUtil {
             }
         }
     }
-    
-    /**
-     * write file content.
-     *
-     * @param path        file path
-     * @param content     content
-     * @param charsetName charsetName
-     * @return whether write ok
-     * @throws IOException IOException
-     */
-    public static Boolean writeFileContent(String path, String content, String charsetName) throws IOException {
-        File file = new File(path);
-        return writeFileContent(file, content, charsetName);
-    }
-    
+
     /**
      * write file content.
      *
@@ -145,7 +153,7 @@ public class ConcurrentDiskUtil {
                     LOGGER.warn("write {} conflict;retry time:{}", file.getName(), i);
                 }
             } while (null == lock);
-            
+
             ByteBuffer sendBuffer = ByteBuffer.wrap(content.getBytes(charsetName));
             while (sendBuffer.hasRemaining()) {
                 channel.write(sendBuffer);
@@ -178,11 +186,11 @@ public class ConcurrentDiskUtil {
                     LOGGER.warn("close wrong", e);
                 }
             }
-            
+
         }
         return true;
     }
-    
+
     /**
      * transfer ByteBuffer to String.
      *
@@ -200,7 +208,7 @@ public class ConcurrentDiskUtil {
         charBuffer = decoder.decode(buffer.asReadOnlyBuffer());
         return charBuffer.toString();
     }
-    
+
     private static void sleep(int time) {
         try {
             Thread.sleep(time);
@@ -208,11 +216,11 @@ public class ConcurrentDiskUtil {
             LOGGER.warn("sleep wrong", e);
         }
     }
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ConcurrentDiskUtil.class);
-    
+
     static final int RETRY_COUNT = 10;
-    
+
     /**
      * ms.
      */

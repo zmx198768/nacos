@@ -24,8 +24,14 @@ import org.slf4j.Logger;
  *
  * @author Nacos
  */
+/**
+ * com.alibaba.nacos.client.config.utils.JvmUtil.java
+ * @阅读人 zengmx(8574157@qq.com)
+ * @阅读时间  2020/9/24 16:05
+ * 获取JVM相关配置，此处主要用来判断是否有多个JVM实例运行
+ */
 public class JvmUtil {
-    
+
     /**
      * whether is multi instance.
      *
@@ -34,13 +40,13 @@ public class JvmUtil {
     public static Boolean isMultiInstance() {
         return isMultiInstance;
     }
-    
+
     private static Boolean isMultiInstance = false;
-    
+
     private static final String TRUE = "true";
-    
+
     private static final Logger LOGGER = LogUtils.logger(JvmUtil.class);
-    
+
     static {
         String multiDeploy = System.getProperty("isMultiInstance", "false");
         if (TRUE.equals(multiDeploy)) {

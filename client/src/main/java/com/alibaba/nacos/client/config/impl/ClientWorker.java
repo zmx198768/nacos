@@ -343,8 +343,12 @@ public class ClientWorker implements Closeable {
         final String dataId = cacheData.dataId;
         final String group = cacheData.group;
         final String tenant = cacheData.tenant;
+        //获取本地缓存配置文件
+        //comment by zengmx(8574157@qq.com)
         File path = LocalConfigInfoProcessor.getFailoverFile(agent.getName(), dataId, group, tenant);
 
+        //获取本地文件内容，并且计算文件MD5字符串以及设置版本信息
+        //comment by zengmx(8574157@qq.com)
         if (!cacheData.isUseLocalConfigInfo() && path.exists()) {
             String content = LocalConfigInfoProcessor.getFailover(agent.getName(), dataId, group, tenant);
             final String md5 = MD5Utils.md5Hex(content, Constants.ENCODE);
@@ -387,10 +391,18 @@ public class ClientWorker implements Closeable {
     /**
      * Check config info.
      */
+    /**
+     * 配置检查，每次检查的数量上限为3000
+     * @阅读人 zengmx(8574157@qq.com)
+     * @阅读时间  2020/9/24 13:45
+     *
+     */
     public void checkConfigInfo() {
         // Dispatch taskes.
         int listenerSize = cacheMap.get().size();
         // Round up the longingTaskCount.
+        //向上取整，默认每个任务的配置数量上限为3000
+        //comment by zengmx(8574157@qq.com)
         int longingTaskCount = (int) Math.ceil(listenerSize / ParamUtil.getPerTaskConfigSize());
         if (longingTaskCount > currentLongingTaskCount) {
             for (int i = (int) currentLongingTaskCount; i < longingTaskCount; i++) {
@@ -533,7 +545,7 @@ public class ClientWorker implements Closeable {
 
         init(properties);
 
-        //起两个线程池，分别用来获取配置信息及执行任务
+        //起两个线程池，分别用来发布配置检查的任务及执行任务，发布任务线程数为1、执行任务线程数为CPU数量
         //comment by zengmx(8574157@qq.com)
         this.executor = Executors.newScheduledThreadPool(1, new ThreadFactory() {
             @Override
@@ -611,8 +623,12 @@ public class ClientWorker implements Closeable {
             List<String> inInitializingCacheList = new ArrayList<String>();
             try {
                 // check failover config
+                //进行容错检查，检查本地存储的配置文件信息
+                //comment by zengmx(8574157@qq.com)
                 for (CacheData cacheData : cacheMap.get().values()) {
                     if (cacheData.getTaskId() == taskId) {
+                        //获取taskid对应的本地缓存配置信息，
+                        //comment by zengmx(8574157@qq.com)
                         cacheDatas.add(cacheData);
                         try {
                             checkLocalConfig(cacheData);
