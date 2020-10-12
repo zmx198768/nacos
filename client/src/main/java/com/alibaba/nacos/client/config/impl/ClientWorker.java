@@ -277,6 +277,12 @@ public class ClientWorker implements Closeable {
         return cacheMap.get().get(GroupKey.getKeyTenant(dataId, group, tenant));
     }
 
+    /**
+     * 根据dataid、group、tenant获取服务器配置信息，返回配置内容+配置类型
+     * @阅读人 zengmx(8574157@qq.com)
+     * @阅读时间  2020/10/12 16:59
+     *
+     */
     public String[] getServerConfig(String dataId, String group, String tenant, long readTimeout)
             throws NacosException {
         String[] ct = new String[2];
@@ -421,12 +427,23 @@ public class ClientWorker implements Closeable {
      * @return String include dataId and group (ps: it maybe null).
      * @throws Exception Exception.
      */
+    /**
+     * 根据dataid检查服务器配置信息，确认是否有更新
+     * @阅读人 zengmx(8574157@qq.com)
+     * @阅读时间  2020/10/12 10:43
+     *
+     */
     List<String> checkUpdateDataIds(List<CacheData> cacheDatas, List<String> inInitializingCacheList) throws Exception {
         StringBuilder sb = new StringBuilder();
+
+        //根据请求接口要求，封装请求信息
+        //comment by zengmx(8574157@qq.com)
         for (CacheData cacheData : cacheDatas) {
             if (!cacheData.isUseLocalConfigInfo()) {
                 sb.append(cacheData.dataId).append(WORD_SEPARATOR);
                 sb.append(cacheData.group).append(WORD_SEPARATOR);
+                //疑惑点：服务端是否有根据MD5确认是否返回最新的配置信息，或者说无返回信息
+                //comment by zengmx(8574157@qq.com)
                 if (StringUtils.isBlank(cacheData.tenant)) {
                     sb.append(cacheData.getMd5()).append(LINE_SEPARATOR);
                 } else {
@@ -451,6 +468,12 @@ public class ClientWorker implements Closeable {
      * @param isInitializingCacheList initial cache lists.
      * @return The updated dataId list(ps: it maybe null).
      * @throws IOException Exception.
+     */
+    /**
+     * 请求服务器配置监听接口，获取最新的配置信息
+     * @阅读人 zengmx(8574157@qq.com)
+     * @阅读时间  2020/10/12 10:49
+     *
      */
     List<String> checkUpdateConfigStr(String probeUpdateString, boolean isInitializingCacheList) throws Exception {
 
@@ -642,6 +665,8 @@ public class ClientWorker implements Closeable {
                 }
 
                 // check server config
+                //获取服务器配置信息
+                //comment by zengmx(8574157@qq.com)
                 List<String> changedGroupKeys = checkUpdateDataIds(cacheDatas, inInitializingCacheList);
                 if (!CollectionUtils.isEmpty(changedGroupKeys)) {
                     LOGGER.info("get changedGroupKeys:" + changedGroupKeys);
@@ -681,6 +706,8 @@ public class ClientWorker implements Closeable {
                 }
                 inInitializingCacheList.clear();
 
+                //把this放入到线程池重新执行形成长轮询，使用默认10ms间隔
+                //comment by zengmx(8574157@qq.com)
                 executorService.execute(this);
 
             } catch (Throwable e) {
