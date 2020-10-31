@@ -184,7 +184,6 @@ public class CacheData {
     void checkListenerMd5() {
         for (ManagerListenerWrap wrap : listeners) {
             //若MD5发生变化，则调用通知接口进行处理
-            //疑惑点：通知哪个listener？
             //comment by zengmx(8574157@qq.com)
             if (!md5.equals(wrap.lastCallMd5)) {
                 safeNotifyListener(dataId, group, content, type, md5, wrap);

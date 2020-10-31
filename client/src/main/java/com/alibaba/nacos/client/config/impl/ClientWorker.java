@@ -189,6 +189,12 @@ public class ClientWorker implements Closeable {
      * @param group  group of data
      * @return cache data
      */
+    /**
+     * 从缓存队列中加载对应缓存信息，如果不存在则创建
+     * @阅读人 zengmx(8574157@qq.com)
+     * @阅读时间  2020/10/16 14:05
+     *
+     */
     public CacheData addCacheDataIfAbsent(String dataId, String group) {
         CacheData cache = getCache(dataId, group);
         if (null != cache) {
@@ -202,6 +208,8 @@ public class ClientWorker implements Closeable {
             CacheData cacheFromMap = getCache(dataId, group);
             // multiple listeners on the same dataid+group and race condition,so double check again
             //other listener thread beat me to set to cacheMap
+            //疑惑点：为什么不将key获取以及cache初始化放入到同步块中，减少getCache(dataId, group)操作及判断？？？
+            //comment by zengmx(8574157@qq.com)
             if (null != cacheFromMap) {
                 cache = cacheFromMap;
                 //reset so that server not hang this check
@@ -218,6 +226,8 @@ public class ClientWorker implements Closeable {
 
         LOGGER.info("[{}] [subscribe] {}", this.agent.getName(), key);
 
+        //加入监控
+        //comment by zengmx(8574157@qq.com)
         MetricsMonitor.getListenConfigCountMonitor().set(cacheMap.get().size());
 
         return cache;
