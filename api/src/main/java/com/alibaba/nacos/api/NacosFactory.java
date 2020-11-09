@@ -35,7 +35,7 @@ import java.util.Properties;
  * com.alibaba.nacos.api.NacosFactory.java
  * @阅读人 zengmx(8574157@qq.com)
  * @阅读时间  2020/9/21 15:08
- * nacosFactory使用静态方法生成configService、namingService、namingMaintainService，
+ * nacosFactory使用静态方法生成configService(配置服务)、namingService(服务注册与发现)、namingMaintainService，
  * 三者生成方式方法类似，均为两类入口，分别为传入properties或传入serverAddr进行服务生成
  */
 public class NacosFactory {
