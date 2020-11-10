@@ -94,13 +94,16 @@ public class NacosNamingService implements NamingService {
         initLogName(properties);
 
         this.eventDispatcher = new EventDispatcher();
-        //启动服务
+
+        //刷新服务器列表信息，并保持登录状态
         //comment by zengmx(8574157@qq.com)
         this.serverProxy = new NamingProxy(this.namespace, this.endpoint, this.serverList, properties);
 
-        //启动心跳服务
+        //启动心跳服务线程池，默认进程数为 cpu.cores/2
         //comment by zengmx(8574157@qq.com)
         this.beatReactor = new BeatReactor(this.serverProxy, initClientBeatThreadCount(properties));
+
+
         this.hostReactor = new HostReactor(this.eventDispatcher, this.serverProxy, beatReactor, this.cacheDir,
                 isLoadCacheAtStart(properties), initPollingThreadCount(properties));
     }

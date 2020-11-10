@@ -29,124 +29,127 @@ import java.util.List;
 
 /**
  * ServiceInfo.
- *
+ * 服务信息
+ * 疑惑点：nacos类似于service对象具有多个，为何不进行整合？
  * @author nkorange
  */
 @JsonInclude(Include.NON_NULL)
 public class ServiceInfo {
-    
+
     @JsonIgnore
     private String jsonFromServer = EMPTY;
-    
+
     public static final String SPLITER = "@@";
-    
+
     private String name;
-    
+
     private String groupName;
-    
+
     private String clusters;
-    
+
     private long cacheMillis = 1000L;
-    
+
     private List<Instance> hosts = new ArrayList<Instance>();
-    
+
     private long lastRefTime = 0L;
-    
+
     private String checksum = "";
-    
+
     private volatile boolean allIPs = false;
-    
+
     public ServiceInfo() {
     }
-    
+
     public boolean isAllIPs() {
         return allIPs;
     }
-    
+
     public void setAllIPs(boolean allIPs) {
         this.allIPs = allIPs;
     }
-    
+
     public ServiceInfo(String key) {
-        
+
+        //疑惑点：直接局部变量定义约定索引？
+        //comment by zengmx(8574157@qq.com)
         int maxIndex = 2;
         int clusterIndex = 1;
         int serviceNameIndex = 0;
-        
+
         String[] keys = key.split(Constants.SERVICE_INFO_SPLITER);
         if (keys.length >= maxIndex) {
             this.name = keys[serviceNameIndex];
             this.clusters = keys[clusterIndex];
         }
-        
+
         this.name = keys[0];
     }
-    
+
     public ServiceInfo(String name, String clusters) {
         this.name = name;
         this.clusters = clusters;
     }
-    
+
     public int ipCount() {
         return hosts.size();
     }
-    
+
     public boolean expired() {
         return System.currentTimeMillis() - lastRefTime > cacheMillis;
     }
-    
+
     public void setHosts(List<Instance> hosts) {
         this.hosts = hosts;
     }
-    
+
     public boolean isValid() {
         return hosts != null;
     }
-    
+
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getGroupName() {
         return groupName;
     }
-    
+
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
-    
+
     public void setLastRefTime(long lastRefTime) {
         this.lastRefTime = lastRefTime;
     }
-    
+
     public long getLastRefTime() {
         return lastRefTime;
     }
-    
+
     public String getClusters() {
         return clusters;
     }
-    
+
     public void setClusters(String clusters) {
         this.clusters = clusters;
     }
-    
+
     public long getCacheMillis() {
         return cacheMillis;
     }
-    
+
     public void setCacheMillis(long cacheMillis) {
         this.cacheMillis = cacheMillis;
     }
-    
+
     public List<Instance> getHosts() {
         return new ArrayList<Instance>(hosts);
     }
-    
+
     /**
      * Judge whether service info is validate.
      *
@@ -156,45 +159,45 @@ public class ServiceInfo {
         if (isAllIPs()) {
             return true;
         }
-        
+
         List<Instance> validHosts = new ArrayList<Instance>();
         for (Instance host : hosts) {
             if (!host.isHealthy()) {
                 continue;
             }
-            
+
             for (int i = 0; i < host.getWeight(); i++) {
                 validHosts.add(host);
             }
         }
-        
+
         return true;
     }
-    
+
     @JsonIgnore
     public String getJsonFromServer() {
         return jsonFromServer;
     }
-    
+
     public void setJsonFromServer(String jsonFromServer) {
         this.jsonFromServer = jsonFromServer;
     }
-    
+
     @JsonIgnore
     public String getKey() {
         return getKey(name, clusters);
     }
-    
+
     @JsonIgnore
     public static String getKey(String name, String clusters) {
-        
+
         if (!isEmpty(clusters)) {
             return name + Constants.SERVICE_INFO_SPLITER + clusters;
         }
-        
+
         return name;
     }
-    
+
     @JsonIgnore
     public String getKeyEncoded() {
         try {
@@ -203,7 +206,7 @@ public class ServiceInfo {
             return getKey();
         }
     }
-    
+
     /**
      * Get {@link ServiceInfo} from key.
      *
@@ -224,33 +227,33 @@ public class ServiceInfo {
         }
         return serviceInfo;
     }
-    
+
     @Override
     public String toString() {
         return getKey();
     }
-    
+
     public String getChecksum() {
         return checksum;
     }
-    
+
     public void setChecksum(String checksum) {
         this.checksum = checksum;
     }
-    
+
     private static boolean isEmpty(String str) {
         return str == null || str.length() == 0;
     }
-    
+
     private static boolean isEmpty(Collection coll) {
         return (coll == null || coll.isEmpty());
     }
-    
+
     private static boolean strEquals(String str1, String str2) {
         return str1 == null ? str2 == null : str1.equals(str2);
     }
-    
+
     private static final String EMPTY = "";
-    
+
     private static final String ALL_IPS = "000--00-ALL_IPS--00--000";
 }
